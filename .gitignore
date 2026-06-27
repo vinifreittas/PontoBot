@@ -1,0 +1,71 @@
+# Cache e arquivos compilados do Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Ambientes virtuais
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Distribuição e empacotamento
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Arquivos de configuração local e segredos
+.env
+.env.local
+.secret
+*.pot
+*.db
+*.db-shm
+*.db-wal
+*.db-journal
+
+# Ferramentas de teste, cobertura e qualidade de código
+.htmlcov/
+.tox/
+.nosenv/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Configurações do editor de código (Ex: VS Code e PyCharm)
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# Arquivos do sistema operacional
+.DS_Store
+Thumbs.db

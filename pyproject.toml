@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=61.0", "setuptools_scm[toml]>=8.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pontobot"
+dynamic = ["version"]
+description = "A discord bot for checking presence"
+requires-python = ">=3.10"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Vinicius Freittas", email = "vinifreitas6465@gmail.com" }
+]
+keywords = ["discord bot"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License", 
+    "Operating System :: OS Independent"
+]
+dependencies = [
+    "discord.py>=2.0.0",
+    "tortoise-orm>=0.20.0",
+    "aerich>=0.7.2",
+    "pydantic>=2.0.0",
+    "pydantic-settings>=2.0.0",
+    "tzdata>=2023.3",
+    "python-dateutil>=2.9.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/vinifreittas/pontobot"
+Bug-Tracker = "https://github.com/vinifreittas/pontobot/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]  
+
+[tool.setuptools.package-data]
+"*" = ["**/migrations/**/*.py", "**/migrations/**/*.sql", "**/migrations/**/*.json"]
+
+[tool.setuptools_scm]
+local_scheme = "no-local-version"
+
+[tool.aerich]
+tortoise_orm = "pontobot.database.manager.TORTOISE_ORM"
+location = "./src/pontobot/database/migrations"
+app = "models"
