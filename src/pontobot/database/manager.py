@@ -1,5 +1,6 @@
 # database/manager.py
 from datetime import datetime, date, time
+from pathlib import Path
 import logging
 import copy
 import os
@@ -31,8 +32,9 @@ class DatabaseManager:
     """Acts as a Data Access Layer (DAL) API for the rest of the application."""
     
     def __init__(self, db_path: str):
+        self.db_path = db_path
         self.config = copy.deepcopy(TORTOISE_ORM)
-        self.config["connections"]["default"] = f"sqlite://{db_path}"
+        self.config["connections"]["default"] = f"sqlite://{self.db_path}"
 
     async def connect(self) -> None:
         """Initializes Tortoise ORM with centralized configurations."""
@@ -41,9 +43,12 @@ class DatabaseManager:
         try:
             # 1. Initialize Tortoise
             await Tortoise.init(config=self.config)
+
+            package_dir = Path(__file__).parent.resolve()
+            migrations_path = os.path.join(package_dir, "migrations")
             
             # 2. Configure Aerich Command
-            command = Command(tortoise_config=self.config, app="models")
+            command = Command(tortoise_config=self.config, app="models", location=migrations_path)
             await command.init()
             
             # 3. Smart Path Selection
