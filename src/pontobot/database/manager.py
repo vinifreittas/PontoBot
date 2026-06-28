@@ -21,7 +21,7 @@ TORTOISE_ORM = {
     },
     "apps": {
         "models": {
-            "models": ["pontobot.database.models"],
+            "models": ["aerich.models", "pontobot.database.models"],
             "default_connection": "default",
         }
     },
@@ -38,36 +38,21 @@ class DatabaseManager:
 
     async def connect(self) -> None:
         """Initializes Tortoise ORM with centralized configurations."""
-        is_new_db = not os.path.exists(self.db_path)
-
         try:
-            # 1. Initialize Tortoise
             await Tortoise.init(config=self.config)
 
             package_dir = Path(__file__).parent.resolve()
             migrations_path = os.path.join(package_dir, "migrations")
             
-            # 2. Configure Aerich Command
             command = Command(tortoise_config=self.config, app="models", location=migrations_path)
             await command.init()
             
-            # 3. Smart Path Selection
-            if is_new_db:
-                logger.info("ℹ️ Fresh database file detected. Running initial layout generation...")
-                try:
-                    await command.init_db(safe=True)
-                    logger.info("✅ Database structural layout initialized successfully.")
-                except Exception as init_err:
-                    logger.warning(f"⚠️ Aerich init_db failed ({init_err}). Forcing backup layout generation...")
-                    await Tortoise.generate_schemas()
-            else:
-                logger.info("⚡ Existing database file detected. Checking for pending upgrades...")
-                try:
-                    await command.upgrade(run_in_transaction=True)
-                    logger.info("✅ Aerich upgrade completed smoothly.")
-                except Exception as upgrade_err:
-                    logger.error(f"❌ Failed to upgrade existing database schema: {upgrade_err}")
-                    raise
+            try:
+                await command.upgrade(run_in_transaction=True)
+                logger.info("✅ Aerich upgraded or create the database with success.")
+            except Exception as upgrade_err:
+                logger.error(f"❌ Aerich failed to upgrade or create the database: {upgrade_err}")
+                raise
 
             logger.info("💾 Database connection via Tortoise ORM established.")
         except Exception as e:
