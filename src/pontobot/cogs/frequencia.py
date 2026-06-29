@@ -283,7 +283,7 @@ class Frequencia(commands.Cog):
 
             embed.add_field(name=f"📅 Data: {dia.strftime("%d/%m/%Y")}", value=self._truncate_text(valor_campo), inline=False)
 
-        await interaction.response.send_message(embed=embed, ephemeral=True)
+        await interaction.response.send_message(embed=embed)
 
     async def _processar_relatorio_individual(self, interaction: discord.Interaction, usuario: discord.Member, label: str, periodo: str, datas: list[date]) -> None:
         """Internal processor for single target user performance profiles."""
