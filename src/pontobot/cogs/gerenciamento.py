@@ -148,9 +148,8 @@ class Gerenciamento(commands.Cog):
         self.bot = bot
         self.db = self.bot.db
         self.embed_colors = self.bot.embed_colors
-        self.log_stream = self.bot.log_stream
+        self.log_stream = self.bot.log_stream   
         self.start_time = self.bot.start_time
-        self.has_errors = self.bot.has_errors
 
     def _get_last_logs(self, lines: int = 12) -> str:
         """Extracts the last N lines from the memory logging stream."""
@@ -170,7 +169,7 @@ class Gerenciamento(commands.Cog):
             color=self.embed_colors.get("default", discord.Color.blue())
         )
 
-        status_msg = "🔴 **Atenção:** Erros detectados nos logs do sistema!" if self.has_errors else "🟢 Todos os sistemas operacionais estão operando normalmente."
+        status_msg = "🔴 **Atenção:** Erros detectados nos logs do sistema!" if self.bot.has_errors else "🟢 Todos os sistemas operacionais estão operando normalmente."
         embed.add_field(name="📌 Status do Sistema", value=status_msg, inline=False)
         embed.add_field(name="📊 Desempenho", value=f"⚡ **Latência:** `{latency}ms`\n⏱️ **Uptime:** `{uptime}`", inline=True)
         embed.add_field(name="🌐 Escopo", value=f"🖥️ **Servidores:** `{total_guilds}`\n👥 **Usuários:** `{total_users}`", inline=True)

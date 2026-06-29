@@ -26,15 +26,26 @@ class DequeLogHandler(logging.Handler):
 log_stream = DequeLogHandler(maxlen=500)
 
 def setup_logging() -> None:
-    """Initializes global logging configurations. Call this once at your entry point."""
+    """Initializes global logging configurations safely by targeting the root logger directly."""
     numeric_level = getattr(logging, LOG_LEVEL.upper(), logging.INFO)
+    
+    # 1. Get the root logger and set its default execution level
+    root_logger = logging.getLogger()
+    root_logger.setLevel(numeric_level)
 
-    logging.basicConfig(
-        level=numeric_level,
-        format='%(asctime)s [%(levelname)s] %(name)s: %(message)s',
-        datefmt='%Y-%m-%d %H:%M:%S',
-        handlers=[
-            logging.StreamHandler(),  # Standard console output
-            log_stream                # In-memory backup stream
-        ]
+    # 2. Define your explicit format layout
+    formatter = logging.Formatter(
+        fmt='%(asctime)s [%(levelname)s] %(name)s: %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S'
     )
+
+    # 3. Safely inject your custom log_stream if it isn't there already
+    if not any(isinstance(h, DequeLogHandler) for h in root_logger.handlers):
+        log_stream.setFormatter(formatter)
+        root_logger.addHandler(log_stream)
+
+    # 4. Safely inject a standard console handler if missing
+    if not any(type(h) is logging.StreamHandler for h in root_logger.handlers):
+        console_handler = logging.StreamHandler()
+        console_handler.setFormatter(formatter)
+        root_logger.addHandler(console_handler)
