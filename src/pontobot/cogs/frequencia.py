@@ -251,18 +251,24 @@ class Frequencia(commands.Cog):
     async def _processar_relatorio_geral(self, interaction: discord.Interaction, label: str, periodo: str, datas: list[date], guild_data) -> None:
         """Internal processor for general global logs output."""
         todos_membros = await self.db.get_membros_guilda(interaction.guild.id)
-        dias_com_ponto = await self.db.get_dias_com_ponto(interaction.guild.id, periodo, datas)
         
+        # If it's 'geral', fetch all distinct days from the DB. Otherwise, use the calendar 'datas' list.
+        if periodo == "geral":
+            dias_para_verificar = await self.db.get_dias_com_ponto(interaction.guild.id, periodo, datas)
+        else:
+            dias_para_verificar = datas
+
         embed = self._criar_embed_base("📋 Relatório Geral de Frequência", f"🗓️ **Filtro:** {label}\n*Exibindo o status de presença organizado por dia.*", "info")
         nome_cargo_especial = guild_data.nome_cargo_especial if guild_data else None
 
-        if not todos_membros or not dias_com_ponto:
+        if not todos_membros or not dias_para_verificar:
             embed.description += "\n\n*Nenhum registro ou usuário elegível encontrado para este período.*"
             return await interaction.response.send_message(embed=embed, ephemeral=True)
 
         guild = interaction.guild
-        for dia in sorted(dias_com_ponto, reverse=True):
+        for dia in sorted(dias_para_verificar, reverse=True):
             presentes, ausentes = [], []
+            # Get check-ins for this specific day (returns a dict of {user_id: time_str})
             presencas_dia = await self.db.get_presencas_dia(interaction.guild.id, dia)
 
             for membro_db in todos_membros:
@@ -270,18 +276,22 @@ class Frequencia(commands.Cog):
                 nick = membro_db.nick or membro_db.usuario.usuario
                 discord_member = guild.get_member(uid) if guild else None
 
+                # Ensure we are comparing date to date to prevent TypeErrors
+                data_cadastro_date = membro_db.data_cadastro if isinstance(membro_db.data_cadastro, date) else membro_db.data_cadastro.date()
+
                 if discord_member and nome_cargo_especial and any(role.name == nome_cargo_especial for role in discord_member.roles):
                     presentes.append(f"✅ **{nick}** (`Isento/Especial`)")
                 elif uid in presencas_dia:
                     presentes.append(f"✅ **{nick}** (`{presencas_dia[uid]}`)")
-                elif dia >= membro_db.data_cadastro:
+                elif dia >= data_cadastro_date:
+                    # Now it safely catches absences for any day after their registration
                     ausentes.append(f"❌ {nick}")
 
             texto_presentes = "\n".join(presentes) if presentes else "*Ninguém compareceu*"
             texto_ausentes = "\n".join(ausentes) if ausentes else "*Nenhuma falta*"
             valor_campo = f"**Presentes:**\n{texto_presentes}\n\n**Ausentes:**\n{texto_ausentes}\n"
 
-            embed.add_field(name=f"📅 Data: {dia.strftime("%d/%m/%Y")}", value=self._truncate_text(valor_campo), inline=False)
+            embed.add_field(name=f"📅 Data: {dia.strftime('%d/%m/%Y')}", value=self._truncate_text(valor_campo), inline=False)
 
         await interaction.response.send_message(embed=embed)
 
