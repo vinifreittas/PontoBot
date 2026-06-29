@@ -131,7 +131,7 @@ class Frequencia(commands.Cog):
             if msg.author.bot or msg.content.strip().lower() != "!ponto" or msg.author.id not in membros_servidor:
                 continue
 
-            member = await self.db.assegurar_membro(guild.id, msg.author.id, msg.author.name, msg.author.display_name)
+            member = await self.db.assegurar_membro(guild.id, msg.author.id, msg.author.name, msg.author.display_name, msg.created_at.date())
             if await self.db.registrar_presenca(member, msg.created_at):
                 novos_registros += 1
                 horario_formatado = msg.created_at.astimezone(tz).strftime('%d/%m/%Y às %H:%M:%S')
@@ -173,7 +173,7 @@ class Frequencia(commands.Cog):
         tz = ZoneInfo(guild_data.fuso_horario)
         agora = datetime.now(tz)
 
-        member = await self.db.assegurar_membro(ctx.guild.id, ctx.author.id, ctx.author.name, ctx.author.display_name)
+        member = await self.db.assegurar_membro(ctx.guild.id, ctx.author.id, ctx.author.name, ctx.author.display_name, ctx.message.created_at.date())
         if not await self.db.registrar_presenca(member, agora):
             embed = self._criar_embed_base("⚠️ Registro Duplicado", f"Olá {ctx.author.mention}, você já registrou sua presença hoje!", "warning")
             return await ctx.message.reply(embed=embed, delete_after=10)

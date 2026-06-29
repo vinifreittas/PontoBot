@@ -82,14 +82,14 @@ class DatabaseManager:
 
     # ------- MEMBER MANAGEMENT -------
 
-    async def assegurar_membro(self, guild_id: int, usuario_id: int, username: str, nick: str) -> Membro:
+    async def assegurar_membro(self, guild_id: int, usuario_id: int, username: str, nick: str, data_cadastro: date) -> Membro:
         """Ensures a user exists, and they are linked as a member."""
         usuario, _ = await Usuario.update_or_create(usuario_id=usuario_id, usuario=username)
         
         membro, _ = await Membro.get_or_create(
             usuario=usuario,
             guild_id=guild_id,
-            defaults={"nick": nick or username, "data_cadastro": date.today()}
+            defaults={"nick": nick, "data_cadastro": data_cadastro}
         )
         return membro
 
