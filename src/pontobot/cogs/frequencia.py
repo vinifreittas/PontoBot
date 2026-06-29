@@ -103,7 +103,7 @@ class Frequencia(commands.Cog):
             logger.info(f"📥 Populando banco de dados inicial para a guilda: {guild.name}")
             for member in guild.members:
                 if not member.bot:
-                    await self.db.assegurar_membro(guild.id, member.id)
+                    await self.db.assegurar_membro(guild.id, member.id, member.name, member.nick)
             
             tz = ZoneInfo(guild_data.fuso_horario)
             await self.db.set_ultima_verificacao(guild.id, datetime.now(tz))
