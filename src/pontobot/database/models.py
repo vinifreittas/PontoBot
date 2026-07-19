@@ -1,13 +1,14 @@
 # database/models.py
 from datetime import datetime
+
 from dateutil.parser import isoparse
 from tortoise import fields
 from tortoise.models import Model
 
-
 # ----------------------------------------------------------------------
 # CUSTOM FIELDS
 # ----------------------------------------------------------------------
+
 
 class SafeDateTimeField(fields.TextField):
     """Custom field to safely parse SQLite ISO timestamps into Python datetime objects."""
@@ -15,13 +16,13 @@ class SafeDateTimeField(fields.TextField):
     def to_python_value(self, value: any) -> datetime | None:
         if value is None or isinstance(value, datetime):
             return value
-        
+
         if isinstance(value, str):
             try:
                 return isoparse(value.strip())
             except (ValueError, TypeError):
                 return None
-                
+
         return super().to_python_value(value)
 
 
@@ -29,54 +30,55 @@ class SafeDateTimeField(fields.TextField):
 # TABLES
 # ----------------------------------------------------------------------
 
+
 class Guild(Model):
-    guild_id = fields.BigIntField(pk=True) 
-    nome_cargo_mestre = fields.CharField(max_length=255, null=False)
-    nome_cargo_especial = fields.CharField(max_length=255, null=False)
-    id_canal_ponto = fields.BigIntField(null=False)
-    fuso_horario = fields.CharField(max_length=100, null=False)
+    guild_id = fields.BigIntField(pk=True)
+    master_role_name = fields.CharField(max_length=255, null=False)
+    special_role_name = fields.CharField(max_length=255, null=False)
+    clock_channel_id = fields.BigIntField(null=False)
+    timezone = fields.CharField(max_length=100, null=False)
 
     class Meta:
         table = "guilds"
 
 
-class Usuario(Model):
-    usuario_id = fields.BigIntField(pk=True)
-    usuario = fields.CharField(max_length=255, null=False)
+class User(Model):
+    user_id = fields.BigIntField(pk=True)
+    username = fields.CharField(max_length=255, null=False)
 
     class Meta:
-        table = "usuarios"
+        table = "users"
 
 
-class Membro(Model):
+class Member(Model):
     id = fields.IntField(pk=True)
-    usuario = fields.ForeignKeyField("models.Usuario", related_name="membro_guildas", on_delete=fields.CASCADE)
-    guild = fields.ForeignKeyField("models.Guild", related_name="membro_usuarios", on_delete=fields.CASCADE)
-    
+    user = fields.ForeignKeyField("models.User", related_name="guild_memberships", on_delete=fields.CASCADE)
+    guild = fields.ForeignKeyField("models.Guild", related_name="guild_members", on_delete=fields.CASCADE)
+
     nick = fields.CharField(max_length=255, null=False)
-    data_cadastro = fields.DateField(auto_now_add=False) 
+    registered_at = fields.DateField(auto_now_add=False)
 
     class Meta:
-        table = "membros"
-        unique_together = (("usuario", "guild"),)
+        table = "members"
+        unique_together = (("user", "guild"),)
 
 
-class Presenca(Model):
+class Attendance(Model):
     id = fields.IntField(pk=True)
-    data = fields.DateField(null=False)
-    membro = fields.ForeignKeyField("models.Membro", related_name="presencas", on_delete=fields.CASCADE)
-    hora = SafeDateTimeField(null=False) 
+    date = fields.DateField(null=False)
+    member = fields.ForeignKeyField("models.Member", related_name="attendances", on_delete=fields.CASCADE)
+    checked_in_at = SafeDateTimeField(null=False)
 
     class Meta:
-        table = "presencas"
-        unique_together = (("data", "membro"),)
+        table = "attendances"
+        unique_together = (("date", "member"),)
 
 
-class Metadados(Model):
-    guild = fields.ForeignKeyField("models.Guild", related_name="metadados", on_delete=fields.CASCADE)
-    chave = fields.CharField(max_length=255, null=False)
-    valor = SafeDateTimeField(null=False)
+class Metadata(Model):
+    guild = fields.ForeignKeyField("models.Guild", related_name="metadata", on_delete=fields.CASCADE)
+    key = fields.CharField(max_length=255, null=False)
+    value = SafeDateTimeField(null=False)
 
     class Meta:
-        table = "metadados"
-        unique_together = (("guild", "chave"),)
+        table = "metadata"
+        unique_together = (("guild", "key"),)

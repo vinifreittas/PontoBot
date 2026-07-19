@@ -1,12 +1,12 @@
 [build-system]
-requires = ["setuptools>=61.0", "setuptools_scm[toml]>=8.0"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
 
 [project]
 name = "pontobot"
 dynamic = ["version"]
 description = "A discord bot for checking presence"
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 readme = "README.md"
 license = { file = "LICENSE" }
 authors = [
@@ -27,19 +27,55 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/vinifreittas/pontobot"
-Bug-Tracker = "https://github.com/vinifreittas/pontobot/issues"
+Homepage = "https://github.com/vinifreittas/PontoBot"
+Bug-Tracker = "https://github.com/vinifreittas/PontoBot/issues"
 
-[tool.setuptools.packages.find]
-where = ["src"]  
+[dependency-groups]
+dev = [
+    "pre-commit>=3.7.0",
+    "ruff>=0.15.20",
+]
 
-[tool.setuptools.package-data]
-"*" = ["**/migrations/**/*.py", "**/migrations/**/*.sql", "**/migrations/**/*.json"]
+# --- Hatch Configuration ---
 
-[tool.setuptools_scm]
+[tool.hatch.build.targets.wheel]
+packages = ["src/pontobot"]
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.version.raw-options]
 local_scheme = "no-local-version"
+
+# --- Third-Party Tools ---
 
 [tool.aerich]
 tortoise_orm = "pontobot.database.manager.TORTOISE_ORM"
 location = "./src/pontobot/database/migrations"
 app = "models"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 120
+src = ["src"]
+
+[tool.ruff.lint]
+select = [
+    "F",    # Pyflakes
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "I",    # isort (import sorting)
+    "UP",   # pyupgrade (syntax modernization)
+    "B",    # flake8-bugbear (bug prevention)
+    "SIM",  # flake8-simplify (code simplification)
+    "N",    # naming convention
+    "RUF",  # ruff specific rules
+]
+
+ignore = [
+    "E501", # Line too long (Ruff's formatter handles this well anyway)
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"

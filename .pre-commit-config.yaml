@@ -1,0 +1,9 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.20  # Use a versão mais recente do Ruff
+    hooks:
+      # 1. Roda o linter e aplica correções automáticas
+      - id: ruff-check
+        args: [ --fix ]
+      # 2. Roda o formatador de código (estilo Black)
+      - id: ruff-format

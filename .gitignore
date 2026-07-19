@@ -1,10 +1,10 @@
-# Cache e arquivos compilados do Python
+# Cache and compiled Python files
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 
-# Ambientes virtuais
+# Virtual environments
 .venv/
 venv/
 env/
@@ -12,7 +12,7 @@ ENV/
 env.bak/
 venv.bak/
 
-# Distribuição e empacotamento
+# Distribution and packaging
 build/
 develop-eggs/
 dist/
@@ -31,7 +31,7 @@ share/python-wheels/
 *.egg
 MANIFEST
 
-# Arquivos de configuração local e segredos
+# Local configuration and secrets files
 .env
 .env.local
 .secret
@@ -41,7 +41,7 @@ MANIFEST
 *.db-wal
 *.db-journal
 
-# Ferramentas de teste, cobertura e qualidade de código
+# Testing tools, coverage and code quality
 .htmlcov/
 .tox/
 .nosenv/
@@ -57,7 +57,7 @@ coverage.xml
 .mypy_cache/
 .ruff_cache/
 
-# Configurações do editor de código (Ex: VS Code e PyCharm)
+# Code editor settings (Ex: VS Code and PyCharm)
 .vscode/
 .idea/
 *.suo
@@ -66,6 +66,6 @@ coverage.xml
 *.sln
 *.swp
 
-# Arquivos do sistema operacional
+# Operating system files
 .DS_Store
 Thumbs.db

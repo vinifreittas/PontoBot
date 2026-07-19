@@ -1,13 +1,16 @@
 # utils/logger.py
-from collections import deque
 import logging
 import os
-from typing import Callable, override
+from collections import deque
+from collections.abc import Callable
+from typing import override
 
 LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
 
+
 class DequeLogHandler(logging.Handler):
     """Custom memory handler to avoid memory leaks and track errors dynamically."""
+
     def __init__(self, maxlen: int = 500):
         super().__init__()
         self.buffer: deque[str] = deque(maxlen=maxlen)
@@ -22,22 +25,21 @@ class DequeLogHandler(logging.Handler):
     def getvalue(self) -> str:
         return "\n".join(self.buffer)
 
+
 # Global instances available to the entire application
 log_stream = DequeLogHandler(maxlen=500)
+
 
 def setup_logging() -> None:
     """Initializes global logging configurations safely by targeting the root logger directly."""
     numeric_level = getattr(logging, LOG_LEVEL.upper(), logging.INFO)
-    
+
     # 1. Get the root logger and set its default execution level
     root_logger = logging.getLogger()
     root_logger.setLevel(numeric_level)
 
     # 2. Define your explicit format layout
-    formatter = logging.Formatter(
-        fmt='%(asctime)s [%(levelname)s] %(name)s: %(message)s',
-        datefmt='%Y-%m-%d %H:%M:%S'
-    )
+    formatter = logging.Formatter(fmt="%(asctime)s [%(levelname)s] %(name)s: %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
 
     # 3. Safely inject your custom log_stream if it isn't there already
     if not any(isinstance(h, DequeLogHandler) for h in root_logger.handlers):
