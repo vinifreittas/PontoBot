@@ -72,7 +72,13 @@ class DatabaseManager:
         return await Guild.get_or_none(guild_id=guild_id)
 
     async def add_guild(
-        self, guild_id: int, master_role_name: str, special_role_name: str, clock_channel_id: int, timezone: str
+        self,
+        guild_id: int,
+        master_role_name: str,
+        special_role_name: str,
+        clock_channel_id: int,
+        timezone: str,
+        language: str,
     ) -> None:
         """Ensures a guild exists in the database, creating it with defaults if not."""
         await Guild.get_or_create(
@@ -81,6 +87,7 @@ class DatabaseManager:
             special_role_name=special_role_name,
             clock_channel_id=clock_channel_id,
             timezone=timezone,
+            language=language,
         )
 
     async def remove_guild(self, guild_id: int) -> None:

@@ -37,6 +37,7 @@ class Guild(Model):
     special_role_name = fields.CharField(max_length=255, null=False)
     clock_channel_id = fields.BigIntField(null=False)
     timezone = fields.CharField(max_length=100, null=False)
+    language = fields.CharField(max_length=10, default="en", null=False)
 
     class Meta:
         table = "guilds"

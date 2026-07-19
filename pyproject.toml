@@ -9,21 +9,19 @@ description = "A discord bot for checking presence"
 requires-python = ">=3.12"
 readme = "README.md"
 license = { file = "LICENSE" }
-authors = [
-    { name = "Vinicius Freittas", email = "vinifreitas6465@gmail.com" }
-]
+authors = [{ name = "Vinicius Freittas", email = "vinifreitas6465@gmail.com" }]
 keywords = ["discord bot"]
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License", 
-    "Operating System :: OS Independent"
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
 ]
 dependencies = [
     "discord.py>=2.0.0",
     "tortoise-orm>=0.20.0",
     "aerich>=0.7.2",
     "tzdata>=2023.3",
-    "python-dateutil>=2.9.0"
+    "python-dateutil>=2.9.0",
 ]
 
 [project.urls]
@@ -31,10 +29,7 @@ Homepage = "https://github.com/vinifreittas/PontoBot"
 Bug-Tracker = "https://github.com/vinifreittas/PontoBot/issues"
 
 [dependency-groups]
-dev = [
-    "pre-commit>=3.7.0",
-    "ruff>=0.15.20",
-]
+dev = ["pre-commit>=3.7.0", "ruff>=0.15.20"]
 
 # --- Hatch Configuration ---
 
@@ -61,15 +56,15 @@ src = ["src"]
 
 [tool.ruff.lint]
 select = [
-    "F",    # Pyflakes
-    "E",    # pycodestyle errors
-    "W",    # pycodestyle warnings
-    "I",    # isort (import sorting)
-    "UP",   # pyupgrade (syntax modernization)
-    "B",    # flake8-bugbear (bug prevention)
-    "SIM",  # flake8-simplify (code simplification)
-    "N",    # naming convention
-    "RUF",  # ruff specific rules
+    "F",   # Pyflakes
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "I",   # isort (import sorting)
+    "UP",  # pyupgrade (syntax modernization)
+    "B",   # flake8-bugbear (bug prevention)
+    "SIM", # flake8-simplify (code simplification)
+    "N",   # naming convention
+    "RUF", # ruff specific rules
 ]
 
 ignore = [

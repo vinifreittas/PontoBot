@@ -27,6 +27,7 @@ class SetupWizardView(discord.ui.View):
         self.special_role_name = None
         self.clock_channel_id = None
         self.timezone = "America/Sao_Paulo"
+        self.language = "en"
 
         # Initialize Step 1
         self.add_item(discord.ui.RoleSelect(placeholder="Select the Master Role...", custom_id="select_master"))
@@ -74,11 +75,26 @@ class SetupWizardView(discord.ui.View):
             custom_id="select_timezone",
         )
         await self._update_view(
-            interaction, content="Almost done! Lastly, select your server's **timezone**.", item=timezone_select
+            interaction, content="Almost done! Next, select your server's **timezone**.", item=timezone_select
         )
 
     async def _handle_timezone(self, interaction: discord.Interaction, values: list):
         self.timezone = values[0]
+
+        language_select = discord.ui.Select(
+            placeholder="Select your Language...",
+            options=[
+                discord.SelectOption(label="Português (Brasil)", value="pt-br"),
+                discord.SelectOption(label="English", value="en"),
+            ],
+            custom_id="select_language",
+        )
+        await self._update_view(
+            interaction, content="Almost done! Lastly, select your server's **language**.", item=language_select
+        )
+
+    async def _handle_language(self, interaction: discord.Interaction, values: list):
+        self.language = values[0]
 
         try:
             await self.bot.db.add_guild(
@@ -87,6 +103,7 @@ class SetupWizardView(discord.ui.View):
                 special_role_name=self.special_role_name,
                 clock_channel_id=self.clock_channel_id,
                 timezone=self.timezone,
+                language=self.language,
             )
             self.bot.dispatch("guild_setup", interaction.guild)
 
@@ -116,6 +133,7 @@ class SetupWizardView(discord.ui.View):
             "select_special": self._handle_special,
             "select_channel": self._handle_channel,
             "select_timezone": self._handle_timezone,
+            "select_language": self._handle_language,
         }
 
         handler = handlers.get(custom_id)

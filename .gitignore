@@ -40,6 +40,7 @@ MANIFEST
 *.db-shm
 *.db-wal
 *.db-journal
+db.sqlite3
 
 # Testing tools, coverage and code quality
 .htmlcov/
