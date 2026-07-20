@@ -3,13 +3,15 @@ requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
 
 [project]
-name = "pontobot"
+name = "PontoBot"
 dynamic = ["version"]
 description = "A discord bot for checking presence"
 requires-python = ">=3.12"
 readme = "README.md"
 license = { file = "LICENSE" }
-authors = [{ name = "Vinicius Freittas", email = "vinifreitas6465@gmail.com" }]
+authors = [
+    { name = "Vinicius Freittas", email = "vinifreitas6465@gmail.com" }
+]
 keywords = ["discord bot"]
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -17,11 +19,11 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    "discord.py>=2.0.0",
-    "tortoise-orm>=0.20.0",
-    "aerich>=0.7.2",
-    "tzdata>=2023.3",
-    "python-dateutil>=2.9.0",
+    "discord.py",
+    "tortoise-orm",
+    "aerich",
+    "tzdata",
+    "python-dateutil",
 ]
 
 [project.urls]
@@ -29,7 +31,10 @@ Homepage = "https://github.com/vinifreittas/PontoBot"
 Bug-Tracker = "https://github.com/vinifreittas/PontoBot/issues"
 
 [dependency-groups]
-dev = ["pre-commit>=3.7.0", "ruff>=0.15.20"]
+dev = [
+    "pre-commit>=4.6.0",
+    "ruff>=0.15.20",
+]
 
 # --- Hatch Configuration ---
 

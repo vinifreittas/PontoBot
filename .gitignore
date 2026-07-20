@@ -36,11 +36,12 @@ MANIFEST
 .env.local
 .secret
 *.pot
-*.db
-*.db-shm
-*.db-wal
-*.db-journal
-db.sqlite3
+
+# Database
+data/
+data/player.db
+data/player.db-shm
+data/player.db-wal
 
 # Testing tools, coverage and code quality
 .htmlcov/
@@ -70,3 +71,6 @@ coverage.xml
 # Operating system files
 .DS_Store
 Thumbs.db
+
+# Extra
+main.py
