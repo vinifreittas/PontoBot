@@ -24,7 +24,11 @@ dependencies = [
     "aerich",
     "tzdata",
     "python-dateutil",
+    "typer"
 ]
+
+[project.scripts]
+pontobot = "pontobot.__main__:cli"
 
 [project.urls]
 Homepage = "https://github.com/vinifreittas/PontoBot"
