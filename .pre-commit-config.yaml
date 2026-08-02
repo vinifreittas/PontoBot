@@ -1,0 +1,33 @@
+default_install_hook_types: [pre-commit]
+
+repos:
+  # 1. Higiene básica do Git e arquivos
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-added-large-files
+        args: ["--maxkb=3000"]
+      - id: check-merge-conflict
+
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.0
+    hooks:
+      - id: gitleaks
+
+  # 2. UV: Garante a integridade do lockfile
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.12.1
+    hooks:
+      - id: uv-lock
+
+  # 3. Ruff: Linter e Formatador Python
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.16.1
+    hooks:
+      # Linter
+      - id: ruff
+        name: ruff-linter
+        args: [ --fix, --exit-non-zero-on-fix ]
+      # Formatter
+      - id: ruff-format
+        name: ruff-formatter
