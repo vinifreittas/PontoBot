@@ -52,7 +52,7 @@ async def test_pagination_view_interaction_check_non_owner(sample_embeds):
     res = await view.interaction_check(interaction)
     assert res is False
     interaction.response.send_message.assert_called_once_with(
-        "⛔ Only the user who requested this report can navigate pages.",
+        "⛔ Only the user who opened this panel can interact.",
         ephemeral=True,
     )
 

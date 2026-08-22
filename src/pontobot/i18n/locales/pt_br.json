@@ -1,0 +1,154 @@
+{
+  "common": {
+    "only_owner_can_interact": "⛔ Apenas o usuário que abriu este painel pode interagir.",
+    "unexpected_error": "❌ Ocorreu um erro inesperado.",
+    "permission_denied": "⛔ Permissão Negada",
+    "permission_denied_desc": "Você precisa do cargo `{role}` para realizar esta ação.",
+    "server_only": "Os comandos do PontoBot só podem ser usados dentro de um servidor.",
+    "unconfigured_guild": "Este servidor ainda não foi configurado! Use `/setup_pontobot` primeiro.",
+    "unconfigured_guild_short": "⚠️ Este servidor ainda não foi configurado."
+  },
+  "commands": {
+    "setup_pontobot": {
+      "name": "setup_pontobot",
+      "description": "Configura o PontoBot no seu servidor."
+    },
+    "attendance": {
+      "name": "relatorio",
+      "description": "Visualiza registros de presença e relatórios filtrados por usuário, período ou visão geral.",
+      "param": {
+        "user": {
+          "name": "usuario",
+          "description": "Selecione um usuário específico (Opcional)."
+        },
+        "period": {
+          "name": "periodo",
+          "description": "Escolha um período da lista ou digite uma data no formato DD/MM/AAAA."
+        }
+      }
+    },
+    "ranking": {
+      "name": "ranking",
+      "description": "Exibe a classificação geral de presença dos membros."
+    },
+    "management": {
+      "name": "gerenciamento",
+      "description": "Menu de gerenciamento e administração do bot."
+    }
+  },
+  "periods": {
+    "all": "Histórico Completo",
+    "today": "Hoje",
+    "7days": "Últimos 7 dias",
+    "30days": "Últimos 30 dias",
+    "custom": "Dia Específico ({date})"
+  },
+  "attendance": {
+    "incorrect_channel_title": "⛔ Canal Incorreto",
+    "incorrect_channel_desc": "Este comando só pode ser usado no canal dedicado ao registro de ponto.",
+    "duplicate_record_title": "⚠️ Registro Duplicado",
+    "duplicate_record_desc": "Olá {user}, você já registrou seu ponto hoje!",
+    "confirmed_title": "✅ Presença Confirmada!",
+    "footer": "Controle Eletrônico de Ponto",
+    "field_member": "👤 Membro",
+    "field_nickname": "🏷️ Apelido",
+    "field_date": "📅 Data",
+    "field_time": "⏰ Hora",
+    "field_date_title": "📅 Data: {date}",
+    "invalid_date_title": "❌ Formato de Data Inválido",
+    "invalid_date_desc": "Por favor, use o formato padrão de data: **DD/MM/AAAA**.\n*Exemplo: 23/06/2026*",
+    "future_date_title": "⏳ Data Futura",
+    "future_date_desc": "Você não pode consultar estatísticas de presença para datas futuras.",
+    "general_report_title": "📋 Relatório Geral de Presença",
+    "general_report_filter": "🗓️ **Filtro:** {filter}\n*Exibindo status de presença organizado por dia.*",
+    "general_report_empty": "🗓️ **Filtro:** {filter}\n*Exibindo status de presença organizado por dia.*\n\n*Nenhum registro ou usuário elegível encontrado para este período.*",
+    "exempt_special": "Isento/Especial",
+    "no_checkins": "*Ninguém registrou ponto*",
+    "no_absences": "*Nenhuma ausência*",
+    "present_header": "**Presentes:**",
+    "absent_header": "**Ausentes:**",
+    "page_footer": "Página {current}/{total}",
+    "user_report_title": "📊 Estatísticas Detalhadas de Presença",
+    "user_report_header": "👤 **Usuário:** {user}\n🗓️ **Período:** {filter}",
+    "days_present": "✅ Dias Presentes",
+    "days_absent": "❌ Dias Ausentes",
+    "attendance_rate": "📈 Taxa de Presença",
+    "presence_suffix": "presença",
+    "days_suffix": "dias",
+    "cooldown_wait": "Aguarde {seconds:.2f}s para usar o comando novamente."
+  },
+  "ranking": {
+    "title": "🏆 Quadro de Honra — Ranking de Presença",
+    "description": "Lista dos membros mais engajados no registro de ponto.",
+    "field_placement": "Posição no Ranking",
+    "checkins_suffix": "pontos registrados",
+    "no_data": "*Nenhum dado registrado ainda.*",
+    "footer": "Atualizado em tempo real"
+  },
+  "offline_sync": {
+    "title": "📥 Relatório de Sincronização Offline",
+    "description": "Identifiquei membros que registraram ponto enquanto eu estava indisponível:",
+    "field_recovered": "📋 Registros Recuperados ({count})",
+    "time_format": "{date} às {time}"
+  },
+  "management": {
+    "title": "🛠️ Sistema Central de Controle | PontoBot",
+    "description": "Painel seguro de operações de administração. Use as ferramentas abaixo para monitorar métricas e gerenciar configurações globais.",
+    "status_field": "📌 Status do Sistema",
+    "status_attention": "🔴 **Atenção:** Erros detectados nos logs do sistema!",
+    "status_normal": "🟢 Todos os sistemas operacionais estão funcionando normalmente.",
+    "performance_field": "📊 Desempenho",
+    "performance_val": "⚡ **Latência:** `{latency}ms`\n⏱️ **Tempo de Atividade:** `{uptime}`",
+    "scope_field": "🌐 Alcance",
+    "scope_val": "🖥️ **Servidores:** `{servers}`\n👥 **Usuários:** `{users}`",
+    "footer": "Acesso Restrito • Consola do Administrador",
+    "user_mgmt_placeholder": "Selecione um membro para gerenciar...",
+    "user_mgmt_title": "👥 Painel de Controle de Usuários",
+    "user_mgmt_desc": "Membro Alvo: {member}\n\nEscolha uma ação abaixo:",
+    "btn_special_tag": "Tag Especial",
+    "btn_back_to_menu": "Voltar ao Menu",
+    "btn_home_menu": "Menu Inicial",
+    "btn_close_console": "Fechar Console",
+    "no_member_selected": "❌ Nenhum membro selecionado.",
+    "special_role_not_found": "❌ Cargo especial não encontrado no servidor.",
+    "special_tag_assigned": "⭐ Tag especial **{role}** atribuída a {member}.",
+    "role_perm_error": "❌ Não tenho permissão para gerenciar cargos. Verifique a hierarquia dos meus cargos.",
+    "category_placeholder": "Selecione uma categoria administrativa...",
+    "cat_user_mgmt": "Gerenciamento de Usuários",
+    "cat_user_mgmt_desc": "Gerencie membros e regras de moderação.",
+    "cat_activity_logs": "Logs de Atividade do Bot",
+    "cat_activity_logs_desc": "Revise tarefas do sistema e operações em tempo real.",
+    "user_mgmt_dashboard_title": "👥 Painel de Gerenciamento de Usuários",
+    "user_mgmt_dashboard_desc": "Selecione um usuário no menu suspenso abaixo e escolha uma ação para processar.",
+    "logs_title": "📜 Logs de Atividade do Sistema (Tempo Real)",
+    "session_closed": "❌ *Sessão administrativa encerrada.*",
+    "requested_by": "Solicitado por {user}"
+  },
+  "setup": {
+    "already_configured_title": "⚙️ **Este servidor já está configurado.**",
+    "already_configured_desc": "⚙️ **Este servidor já está configurado.**\nDeseja reconfigurar o PontoBot? Isso sobrescreverá a sua configuração existente.",
+    "btn_reconfigure": "Reconfigurar Bot",
+    "btn_cancel": "Cancelar",
+    "reconfig_confirm": "Vamos reconfigurar o PontoBot! Primeiro, selecione o **Cargo Master** (o cargo que gerenciará o sistema).",
+    "reconfig_cancel": "⚙️ Configuração cancelada. A configuração existente foi mantida.",
+    "step_init": "Vamos configurar o PontoBot! Primeiro, selecione o **Cargo Master** (o cargo que gerenciará o sistema).",
+    "placeholder_master": "Selecione o Cargo Master...",
+    "step_special": "Ótimo! Agora, selecione o **Cargo Especial**.",
+    "placeholder_special": "Selecione o Cargo Especial...",
+    "step_channel": "Incrível. Em seguida, escolha o **canal de texto** onde os pontos serão registrados.",
+    "placeholder_channel": "Selecione o canal de registro...",
+    "step_timezone": "Quase lá! Em seguida, selecione o **fuso horário** do seu servidor.",
+    "placeholder_timezone": "Selecione o seu Fuso Horário...",
+    "step_language": "Quase lá! Por fim, selecione o **idioma** do seu servidor.",
+    "placeholder_language": "Selecione o seu Idioma...",
+    "opt_lang_ptbr": "Português (Brasil)",
+    "opt_lang_en": "Inglês",
+    "opt_tz_custom": "Outro (Fuso Horário IANA Personalizado...)",
+    "modal_tz_title": "Configuração de Fuso Horário",
+    "modal_tz_label": "Fuso Horário (formato IANA)",
+    "modal_tz_placeholder": "ex: America/Sao_Paulo, Europe/Lisbon, UTC",
+    "invalid_tz": "❌ Fuso horário inválido: `{tz}`. Por favor, insira um identificador Fuso Horário IANA válido (ex: `America/Sao_Paulo`, `Europe/Lisbon`).",
+    "setup_complete": "✅ **Configuração Concluída!** Seu servidor foi registrado com sucesso no banco de dados.",
+    "setup_error": "❌ Ocorreu um erro ao salvar a configuração. Por favor, tente novamente mais tarde."
+  }
+}

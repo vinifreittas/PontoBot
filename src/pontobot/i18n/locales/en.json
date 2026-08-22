@@ -1,0 +1,154 @@
+{
+  "common": {
+    "only_owner_can_interact": "⛔ Only the user who opened this panel can interact.",
+    "unexpected_error": "❌ An unexpected error occurred.",
+    "permission_denied": "⛔ Permission Denied",
+    "permission_denied_desc": "You need the `{role}` role to perform this action.",
+    "server_only": "PontoBot commands can only be used within a server (guild).",
+    "unconfigured_guild": "This server has not been configured yet! Use `/setup_pontobot` first.",
+    "unconfigured_guild_short": "⚠️ This server has not been configured yet."
+  },
+  "commands": {
+    "setup_pontobot": {
+      "name": "setup_pontobot",
+      "description": "Configure PontoBot on your server."
+    },
+    "attendance": {
+      "name": "attendance",
+      "description": "View attendance records and reports filtered by user, period, or global overview.",
+      "param": {
+        "user": {
+          "name": "user",
+          "description": "Select a specific user (Optional)."
+        },
+        "period": {
+          "name": "period",
+          "description": "Choose a period from the list or type a specific date formatted as DD/MM/YYYY."
+        }
+      }
+    },
+    "ranking": {
+      "name": "ranking",
+      "description": "Displays the global attendance leaderboard."
+    },
+    "management": {
+      "name": "management",
+      "description": "Bot management menu."
+    }
+  },
+  "periods": {
+    "all": "Full History",
+    "today": "Today",
+    "7days": "Last 7 days",
+    "30days": "Last 30 days",
+    "custom": "Specific Day ({date})"
+  },
+  "attendance": {
+    "incorrect_channel_title": "⛔ Incorrect Channel",
+    "incorrect_channel_desc": "This command can only be used in the dedicated attendance tracking channel.",
+    "duplicate_record_title": "⚠️ Duplicate Record",
+    "duplicate_record_desc": "Hello {user}, you have already checked in today!",
+    "confirmed_title": "✅ Attendance Confirmed!",
+    "footer": "Electronic Attendance Tracking",
+    "field_member": "👤 Team Member",
+    "field_nickname": "🏷️ Nickname",
+    "field_date": "📅 Date",
+    "field_time": "⏰ Time",
+    "field_date_title": "📅 Date: {date}",
+    "invalid_date_title": "❌ Invalid Date Format",
+    "invalid_date_desc": "Please use the standard date format: **DD/MM/YYYY**.\n*Example: 23/06/2026*",
+    "future_date_title": "⏳ Future Date",
+    "future_date_desc": "You cannot look up attendance statistics for future dates.",
+    "general_report_title": "📋 General Attendance Report",
+    "general_report_filter": "🗓️ **Filter:** {filter}\n*Displaying attendance status organized by day.*",
+    "general_report_empty": "🗓️ **Filter:** {filter}\n*Displaying attendance status organized by day.*\n\n*No logs or eligible users found for this period.*",
+    "exempt_special": "Exempt/Special",
+    "no_checkins": "*No one checked in*",
+    "no_absences": "*No absences*",
+    "present_header": "**Present:**",
+    "absent_header": "**Absent:**",
+    "page_footer": "Page {current}/{total}",
+    "user_report_title": "📊 Detailed Attendance Statistics",
+    "user_report_header": "👤 **User:** {user}\n🗓️ **Window:** {filter}",
+    "days_present": "✅ Days Present",
+    "days_absent": "❌ Days Absent",
+    "attendance_rate": "📈 Attendance Rate",
+    "presence_suffix": "presence",
+    "days_suffix": "days",
+    "cooldown_wait": "Wait {seconds:.2f}s to use the command."
+  },
+  "ranking": {
+    "title": "🏆 Honor Roll — Attendance Ranking",
+    "description": "List of the most engaged team members checking in.",
+    "field_placement": "Leaderboard Placement",
+    "checkins_suffix": "check-ins",
+    "no_data": "*No data recorded yet.*",
+    "footer": "Updated in real-time"
+  },
+  "offline_sync": {
+    "title": "📥 Offline Synchronization Report",
+    "description": "I noticed some team members checked in while I was unavailable:",
+    "field_recovered": "📋 Recovered Records ({count})",
+    "time_format": "{date} at {time}"
+  },
+  "management": {
+    "title": "🛠️ Central Control System | PontoBot",
+    "description": "Secure administration operations panel. Use the tools and menus below to monitor metrics and manage global configurations.",
+    "status_field": "📌 System Status",
+    "status_attention": "🔴 **Attention:** Errors detected in system logs!",
+    "status_normal": "🟢 All operational systems are running normally.",
+    "performance_field": "📊 Performance",
+    "performance_val": "⚡ **Latency:** `{latency}ms`\n⏱️ **Uptime:** `{uptime}`",
+    "scope_field": "🌐 Scope",
+    "scope_val": "🖥️ **Servers:** `{servers}`\n👥 **Users:** `{users}`",
+    "footer": "Restricted Access • Administrator Console",
+    "user_mgmt_placeholder": "Select a member to manage...",
+    "user_mgmt_title": "👥 User Management Control Panel",
+    "user_mgmt_desc": "Target Member: {member}\n\nChoose an action below:",
+    "btn_special_tag": "Special Tag",
+    "btn_back_to_menu": "Back to Menu",
+    "btn_home_menu": "Home Menu",
+    "btn_close_console": "Close Console",
+    "no_member_selected": "❌ No member selected.",
+    "special_role_not_found": "❌ Special role not found on server.",
+    "special_tag_assigned": "⭐ Special tag **{role}** assigned to {member}.",
+    "role_perm_error": "❌ I don't have permission to manage roles. Check my role hierarchy.",
+    "category_placeholder": "Select an administrative category...",
+    "cat_user_mgmt": "User Management",
+    "cat_user_mgmt_desc": "Manage members and moderation rules.",
+    "cat_activity_logs": "Bot Activity Logs",
+    "cat_activity_logs_desc": "Review system tasks and live operations.",
+    "user_mgmt_dashboard_title": "👥 User Management Dashboard",
+    "user_mgmt_dashboard_desc": "Select a user from the dropdown menu below, then choose an action to process.",
+    "logs_title": "📜 System Activity Logs (Real-Time)",
+    "session_closed": "❌ *Administrative session terminated.*",
+    "requested_by": "Requested by {user}"
+  },
+  "setup": {
+    "already_configured_title": "⚙️ **This server is already configured.**",
+    "already_configured_desc": "⚙️ **This server is already configured.**\nDo you want to reconfigure PontoBot? This will overwrite your existing configuration.",
+    "btn_reconfigure": "Reconfigure Bot",
+    "btn_cancel": "Cancel",
+    "reconfig_confirm": "Let's reconfigure PontoBot! First, select the **Master Role** (the role that will manage the system).",
+    "reconfig_cancel": "⚙️ Setup cancelled. Existing configuration was kept.",
+    "step_init": "Let's configure PontoBot! First, select the **Master Role** (the role that will manage the system).",
+    "placeholder_master": "Select the Master Role...",
+    "step_special": "Great! Now, select the **Special Role**.",
+    "placeholder_special": "Select the Special Role...",
+    "step_channel": "Awesome. Next, choose the **text channel** where points will be logged.",
+    "placeholder_channel": "Select the tracking channel...",
+    "step_timezone": "Almost done! Next, select your server's **timezone**.",
+    "placeholder_timezone": "Select your Timezone...",
+    "step_language": "Almost done! Lastly, select your server's **language**.",
+    "placeholder_language": "Select your Language...",
+    "opt_lang_ptbr": "Portuguese (Brazil)",
+    "opt_lang_en": "English",
+    "opt_tz_custom": "Other (Custom IANA Timezone...)",
+    "modal_tz_title": "Timezone Configuration",
+    "modal_tz_label": "Timezone (IANA format)",
+    "modal_tz_placeholder": "e.g. Europe/Berlin, Asia/Tokyo, America/Chicago",
+    "invalid_tz": "❌ Invalid timezone: `{tz}`. Please enter a valid IANA timezone identifier (e.g., `Europe/Berlin`, `Asia/Tokyo`).",
+    "setup_complete": "✅ **Setup Complete!** Your server has been successfully registered in the database.",
+    "setup_error": "❌ An error occurred while saving the configuration. Please try again later."
+  }
+}

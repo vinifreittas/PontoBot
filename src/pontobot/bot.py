@@ -9,18 +9,11 @@ from discord import app_commands
 from discord.ext import commands
 
 from .database import DatabaseManager
+from .i18n import PontoBotTranslator, t
+from .utils.constants import EMBED_COLORS
 from .utils.logger import log_stream, setup_logging
 
 logger = logging.getLogger(__name__)
-
-# Configuration Constants
-EMBED_COLORS = {
-    "default": 0x2B2D31,
-    "success": 0x2ECC71,
-    "info": 0x3498DB,
-    "warning": 0xF1C40F,
-    "error": 0xE74C3C,
-}
 
 
 class PontoBot(commands.Bot):
@@ -58,8 +51,18 @@ class PontoBot(commands.Bot):
         """Flags that an error occurred in the log stream."""
         self.has_errors = True
 
+    async def get_guild_language(self, guild_id: int | None) -> str:
+        """Helper to fetch a guild's configured language, falling back to default 'en'."""
+        if not guild_id:
+            return "en"
+        guild_data = await self.db.get_guild(guild_id)
+        return guild_data.language if guild_data else "en"
+
     async def _is_configured(self, interaction: discord.Interaction) -> bool:
         """Global check that runs before every slash command."""
+        if interaction.guild is None:
+            raise app_commands.CheckFailure(t("common.server_only", lang=interaction.locale))
+
         if interaction.command and interaction.command.name == "setup_pontobot":
             return True
 
@@ -67,10 +70,13 @@ class PontoBot(commands.Bot):
         if guild_data:
             return True
 
-        raise app_commands.CheckFailure("This server has not been configured yet! Use `/setup` first.")
+        raise app_commands.CheckFailure(t("common.unconfigured_guild", lang=interaction.locale))
 
     async def has_access(self, member: discord.Member, guild: discord.Guild) -> bool:
-        """Checks if a member has administrative access to the guild based on roles."""
+        """Checks if a member has administrative access to the guild based on roles or permissions."""
+        if member.guild_permissions.administrator or member.id == guild.owner_id:
+            return True
+
         guild_data = await self.db.get_guild(guild.id)
         if not guild_data:
             return False
@@ -81,6 +87,9 @@ class PontoBot(commands.Bot):
         """Asynchronous initialization before the bot connects to the Gateway."""
         await self.db.connect()
 
+        # Set up translator for native slash command UI localization
+        await self.tree.set_translator(PontoBotTranslator())
+
         # Set up global slash command error handling
         self.tree.on_error = self.on_app_command_error
 
@@ -89,13 +98,16 @@ class PontoBot(commands.Bot):
         cogs_dir = base_dir / "cogs"
         package_name = self.__module__.split(".")[0]
 
-        for path in cogs_dir.glob("*.py"):
-            if not path.name.startswith("_"):
+        for path in cogs_dir.iterdir():
+            if (path.is_file() and path.suffix == ".py" and not path.name.startswith("_")) or (
+                path.is_dir() and (path / "__init__.py").exists() and not path.name.startswith("_")
+            ):
+                ext_name = path.stem if path.is_file() else path.name
                 try:
-                    await self.load_extension(f"{package_name}.cogs.{path.stem}")
-                    logger.info("📦 Extension loaded successfully: %s", path.stem)
+                    await self.load_extension(f"{package_name}.cogs.{ext_name}")
+                    logger.info("📦 Extension loaded successfully: %s", ext_name)
                 except Exception as e:
-                    logger.error("❌ Failed to load extension %s: %s", path.stem, e)
+                    logger.error("❌ Failed to load extension %s: %s", ext_name, e)
 
         if self.sync_on_startup:
             try:
@@ -110,14 +122,25 @@ class PontoBot(commands.Bot):
     async def on_command_error(self, ctx: commands.Context, error: commands.CommandError) -> None:
         """Handles errors raised during prefix command execution."""
         if isinstance(error, commands.CommandOnCooldown):
-            await ctx.reply(f"Wait {error.retry_after:.2f}s to use the command.", delete_after=5)
+            lang = await self.get_guild_language(ctx.guild.id) if ctx.guild else "en"
+            msg = t("attendance.cooldown_wait", lang=lang, seconds=error.retry_after)
+            await ctx.reply(msg, delete_after=5)
         else:
             logger.error("Error in command '%s': %s", ctx.command, error)
 
     async def on_app_command_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError) -> None:
         """Handles errors raised during application (slash) command execution."""
 
-        # 1. Handle our custom configuration check failure (if the guild is not configured)
+        # 1. Handle command cooldowns
+        if isinstance(error, app_commands.CommandOnCooldown):
+            cooldown_msg = t("attendance.cooldown_wait", lang=interaction.locale, seconds=error.retry_after)
+            if not interaction.response.is_done():
+                await interaction.response.send_message(f"⏳ {cooldown_msg}", ephemeral=True)
+            else:
+                await interaction.followup.send(f"⏳ {cooldown_msg}", ephemeral=True)
+            return
+
+        # 2. Handle configuration check failure (if the guild is not configured)
         if isinstance(error, app_commands.CheckFailure):
             error_message = str(error)
 
@@ -133,10 +156,11 @@ class PontoBot(commands.Bot):
         # 2. Handle generic unexpected errors (Log them and notify user)
         logger.error("Error in slash command '%s': %s", interaction.command, error)
 
+        err_msg = t("common.unexpected_error", lang=interaction.locale)
         if not interaction.response.is_done():
-            await interaction.response.send_message("❌ An unexpected error occurred.", ephemeral=True)
+            await interaction.response.send_message(err_msg, ephemeral=True)
         else:
-            await interaction.followup.send("❌ An unexpected error occurred.", ephemeral=True)
+            await interaction.followup.send(err_msg, ephemeral=True)
 
     async def on_ready(self):
         """Handles the bot's successful connection to Discord."""

@@ -32,7 +32,7 @@ class SafeDateTimeField(fields.DatetimeField):
 
 
 class Guild(Model):
-    guild_id = fields.BigIntField(pk=True)
+    guild_id = fields.BigIntField(primary_key=True)
     master_role_id = fields.BigIntField(null=False)
     special_role_id = fields.BigIntField(null=False)
     clock_channel_id = fields.BigIntField(null=False)
@@ -44,7 +44,7 @@ class Guild(Model):
 
 
 class User(Model):
-    user_id = fields.BigIntField(pk=True)
+    user_id = fields.BigIntField(primary_key=True)
     username = fields.CharField(max_length=255, null=False)
 
     class Meta:
@@ -52,7 +52,7 @@ class User(Model):
 
 
 class Member(Model):
-    id = fields.IntField(pk=True)
+    id = fields.IntField(primary_key=True)
     user = fields.ForeignKeyField("models.User", related_name="guild_memberships", on_delete=fields.CASCADE)
     guild = fields.ForeignKeyField("models.Guild", related_name="guild_members", on_delete=fields.CASCADE)
 
@@ -65,7 +65,7 @@ class Member(Model):
 
 
 class Attendance(Model):
-    id = fields.IntField(pk=True)
+    id = fields.IntField(primary_key=True)
     date = fields.DateField(null=False)
     member = fields.ForeignKeyField("models.Member", related_name="attendances", on_delete=fields.CASCADE)
     checked_in_at = SafeDateTimeField(null=False)

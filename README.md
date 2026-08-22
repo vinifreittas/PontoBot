@@ -7,7 +7,7 @@
 
   <!-- Shields and Badges Gallery -->
   <p align="center">
-    <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python Version"></a>
+    <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.12%2B-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python Version"></a>
     <a href="https://discordpy.readthedocs.io/"><img src="https://img.shields.io/badge/Discord.py-2.4%2B-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Discord.py"></a>
     <a href="https://tortoise.github.io/"><img src="https://img.shields.io/badge/Database-Tortoise%20ORM-EE6C4D?style=for-the-badge&logo=sqlite&logoColor=white" alt="Database ORM"></a>
     <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-F5A623?style=for-the-badge" alt="License"></a>
@@ -27,7 +27,7 @@
 
 **PontoBot** is a reliable, high-performance Discord bot engineered to track team attendance, generate comprehensive frequency reports, and streamline organizational data management directly inside your server ecosystem.
 
-Built on modern asynchronous architectures utilizing **discord.py** and **Tortoise ORM**, it provides seamless multi-tenant isolation. All server rules, access layers, and operational histories are securely committed to a zero-configuration SQLite local instance.
+Built on modern asynchronous architectures utilizing **discord.py** and **Tortoise ORM**, it provides seamless multi-tenant isolation per Discord guild. All server rules, access layers, and operational histories are securely persisted to a zero-configuration SQLite local instance (upgradeable to PostgreSQL). The bot also ships with a full internationalization layer supporting **English** and **Brazilian Portuguese** out of the box, with native Discord slash-command locale integration.
 
 ---
 
@@ -38,6 +38,7 @@ Built on modern asynchronous architectures utilizing **discord.py** and **Tortoi
 * **📊 Granular Reporting Modules:** Export highly customizable timesheet profiles filtered by targeted user, distinct dates, or specific community milestones.
 * **🏆 Leaderboards & Engagement:** Dynamic ranking grids showcasing your most consistent community or team operators.
 * **🛡️ Resilient Recovery Layer:** Built-in fault tolerance that queues and logs disrupted events during brief internet drops or system outages.
+* **🌐 Multilingual:** Native Discord locale detection with full English and Brazilian Portuguese support.
 
 ---
 
@@ -62,113 +63,99 @@ Built on modern asynchronous architectures utilizing **discord.py** and **Tortoi
 
 ## 🛠️ Prerequisites
 
-Ensure your host container or dedicated machine fits the following operating baselines:
+Ensure your host machine fits the following baselines:
 
-* **Runtime Engine:** Python version `3.10` or higher installed.
+* **Runtime Engine:** Python version `3.12` or higher installed.
+* **Package Manager:** [`uv`](https://docs.astral.sh/uv/) (recommended) or `pip`.
 * **Gateway Credentials:** A distinct Discord Token derived from the official [Discord Developer Portal](https://discord.com/developers/applications).
-* **Gateway Privileges:** Explicit validation for `Message Content` and `Guild Members` Privileged Intents inside your application control array.
+* **Gateway Privileges:** Explicit validation for `Message Content` and `Guild Members` Privileged Intents inside your application control panel.
 
 ---
 
-## 📦 Quick Start Execution
+## 📦 Quick Start
 
-### 1. Installation
-
-Isolate dependencies using an execution container or local virtual package sandbox:
+### 1. Clone & Install
 
 ```bash
-# Clone the remote code matrix
-git clone [https://github.com/vinifreittas/pontobot.git](https://github.com/vinifreittas/pontobot.git)
+# Clone the repository
+git clone https://github.com/vinifreittas/pontobot.git
 cd pontobot
 
-# Establish your dedicated virtual sandbox
-python -m venv .venv
-source .venv/bin/activate  # Windows users run: .venv\Scripts\activate
-
-# Install package architecture in an editable state
-pip install -e .
-
+# Install dependencies via uv (recommended)
+uv sync
 ```
 
-### 2. Configuration Matrix
+### 2. Configuration
 
 > [!IMPORTANT]
-> Never persist raw API credentials directly inside code files. Always supply environment configurations via system environment parameters or secure secret lockers.
+> Never persist raw API credentials directly inside code files. Always supply environment configurations via system environment variables or a secure secret manager.
 
 ```bash
-# Append your live token key to active memory
 export DISCORD_TOKEN="your-super-secret-bot-token"
-
 ```
 
-Construct an entry execution module (e.g., `run_bot.py`):
+Optional environment variables:
 
-```python
-import os
-from pontobot import PontoBot
+| Variable | Default | Description |
+| :--- | :--- | :--- |
+| `DISCORD_TOKEN` | *(required)* | Bot authentication token |
+| `DATABASE_URL` | `sqlite://db.sqlite3` | Tortoise ORM database URL |
+| `SYNC_COMMANDS` | `false` | Sync global slash commands on startup |
+| `LOG_LEVEL` | `INFO` | Logging verbosity (`DEBUG`, `INFO`, `WARNING`, `ERROR`) |
 
-if __name__ == "__main__":
-    # Instantiate the application wrapper
-    bot = PontoBot()
-
-    # Fire up the persistent event cluster
-    bot.run(os.environ["DISCORD_TOKEN"])
-
-```
-
-Boot the service runtime:
+### 3. Run
 
 ```bash
-python run_bot.py
-
+uv run python main.py
 ```
 
 ---
 
 ## 🗺️ System Initialization Guide
 
-When PontoBot maps to your target Guild cluster, complete these setup parameters:
+When PontoBot joins your Discord server, complete these setup steps:
 
 1. Target a safe operational tracking text channel.
-2. Call the administrative initialization module: `/setup_pontobot`.
-3. Provide the context arguments requested by the prompt matrix:
+2. Call the administrative initialization command: `/setup_pontobot`.
+3. Provide the following configuration arguments via the interactive wizard:
 
 ```
 ├── Manager Role    --> Authorized group allowed to call management views
 ├── Tag Role        --> Target users subjected to tracking parameters
-├── Target Channel  --> The restricted viewport allocated for text log check-ins
-└── Timezone        --> Dynamic time offset configurations (e.g., America/Sao_Paulo)
-
+├── Target Channel  --> The restricted channel allocated for text check-ins (!ponto)
+└── Timezone        --> Dynamic time offset (e.g., America/Sao_Paulo, Europe/London)
 ```
 
 ---
 
-## 📁 Repository Blueprint
+## 📁 Repository Structure
 
-```directory
+```
 src/
 └── pontobot/
-    ├── bot.py             # Client pipeline bootstrap configuration
-    ├── cogs/              # Asynchronous command structures
-    │   ├── attendance.py
-    │   ├── management.py
-    │   └── setup.py
-    └── database/          # Persistent schema models
-        ├── manager.py
-        ├── models.py
-        └── migrations/
-
+    ├── bot.py                    # PontoBot client bootstrap & cog auto-loader
+    ├── cogs/                     # Discord Cog subpackages
+    │   ├── attendance/           # !ponto check-in, /attendance reports, /ranking
+    │   ├── management/           # /management dashboard & log stream
+    │   └── setup/                # /setup_pontobot configuration wizard
+    ├── database/                 # Tortoise ORM models, DatabaseManager DAL, migrations
+    ├── i18n/                     # Internationalization (TranslationManager, PontoBotTranslator, locales/)
+    └── utils/                    # Shared utilities (embeds, logger, views, constants)
+tests/                            # pytest test suite
+main.py                           # Entry point
 ```
 
 ---
 
 ## 🏗️ Architectural Notes
 
-* **Data Isolation:** Configuration schemes are parsed per guild. Multiple Discord servers can host a single bot instance completely independently without data pollution.
-* **Default Database Engine:** Uses SQLite for local zero-configuration deployment. Can easily be updated via Tortoise ORM configuration mappings to scale up to PostgreSQL or MySQL if required.
+* **Data Isolation:** Configuration schemes are parsed per guild. Multiple Discord servers can share a single bot instance completely independently, without data pollution.
+* **Default Database Engine:** Uses SQLite for local zero-configuration deployment. Easily upgradeable to PostgreSQL via the `DATABASE_URL` environment variable and Tortoise ORM configuration.
+* **Internationalization:** The `PontoBotTranslator` integrates with Discord's native locale detection to render slash command descriptions and response strings in the user's locale. The guild's configured language (`Guild.language`) is persisted in the database and used as a fallback when a Discord locale is not available.
+* **Dependency Direction:** `database / utils / i18n` ← `cogs` ← `bot` ← `main.py`. Lower layers never import from higher ones.
 
 ---
 
 ## ⚖️ License
 
-Distributed completely open-source under the guidelines of the **MIT License**. For complete compliance requirements, see the full [LICENSE](https://www.google.com/search?q=LICENSE) asset wrapper.
+Distributed completely open-source under the guidelines of the **MIT License**. For complete compliance requirements, see the full [LICENSE](LICENSE) file.
