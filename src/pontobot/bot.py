@@ -33,6 +33,7 @@ class PontoBot(commands.Bot):
         self.sync_on_startup = sync_on_startup
 
         # Core Systems
+        Path(db_path).parent.mkdir(parents=True, exist_ok=True)
         self.db = DatabaseManager(db_path)
         self.log_stream = log_stream
 
